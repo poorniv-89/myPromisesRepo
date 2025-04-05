@@ -14,7 +14,6 @@ async function central(id) {
   let db = "db1";
   if (id > 4) db = "db2";
   if (id > 7) db = "db3";
-
   return db;
 }
 
@@ -104,4 +103,23 @@ function getUserData(id) {
     db2: db2,
     db3: db3
   };
-}
+central(id)
+.then((db) => {
+      return dbs[db](id);
+    })
+    .then((userData)=> {
+      //console.log(userData);
+      return vault(id)
+      .then((vaultData)=>{
+        // console.log(vaultData);
+      let combinedData = { ...userData, ...vaultData };
+      console.log(combinedData);
+    });
+    })
+      .catch((error) => {
+        console.log(error);
+    });
+  }
+
+getUserData(9);
+
